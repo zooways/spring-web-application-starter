@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:mysql://192.168.31.55:3326/chat?useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8
+    username: root
+    password: rootmima
+  redis:
+    host: 192.168.31.55
+    port: 8379
+
+
+app:
+  jwt:
+    secret: 944af8dab6b146e7b652211971d1175c
