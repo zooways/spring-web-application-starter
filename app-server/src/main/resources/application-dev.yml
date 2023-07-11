@@ -11,3 +11,19 @@ spring:
 app:
   jwt:
     secret: 944af8dab6b146e7b652211971d1175c
+
+
+#############OSS#############
+oss:
+  enabled:
+    true
+  type:
+    minio
+  endpoint:
+    http://192.168.31.55:9000
+  accesskey:
+    UjAd56L9hKhb1aN8QjIn
+  secretkey:
+    9fhoc7tueeUc1VNzsxOzeiNPL0lEL6wdiw3btb9Q
+  bucketName:
+    default

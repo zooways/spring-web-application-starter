@@ -1,9 +1,14 @@
 package com.zoowayss.app.server.controller;
 
+import com.zoowayss.app.common.common.domain.vo.response.ApiResult;
+import com.zoowayss.app.common.common.utils.oss.MinIOTemplate;
+import com.zoowayss.app.common.common.utils.oss.domain.OssReq;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * @Description:
@@ -16,8 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class TestController {
 
-    @GetMapping
-    public void test() {
-        log.info("accept request");
+    @Resource
+    private MinIOTemplate minIOTemplate;
+
+    @PostMapping
+    public ApiResult test() {
+        OssReq ossReq = OssReq.builder()
+                .fileName("test.jpg")
+                .filePath("/image")
+                .uid(321123L)
+                .build();
+        return ApiResult.success(minIOTemplate.getPreSignedObjectUrl(ossReq));
     }
 }

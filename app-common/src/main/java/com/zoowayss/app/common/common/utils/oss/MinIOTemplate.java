@@ -13,6 +13,7 @@ import io.minio.messages.Item;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.io.InputStream;
 import java.time.ZonedDateTime;
@@ -23,7 +24,7 @@ import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
-public class MinIOTemplate {
+public class MinIOTemplate implements InitializingBean {
 
     /**
      * MinIO 客户端
@@ -160,4 +161,10 @@ public class MinIOTemplate {
         return minioClient.getPresignedPostFormData(policy);
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        if(!this.bucketExists(ossProperties.getBucketName())){
+            this.makeBucket(ossProperties.getBucketName());
+        }
+    }
 }
