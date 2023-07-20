@@ -1,14 +1,16 @@
 package com.zoowayss.app.server.controller;
 
+import com.zoowayss.app.common.common.annotation.RedisCache;
+import com.zoowayss.app.common.common.domain.vo.request.PageBaseReq;
 import com.zoowayss.app.common.common.domain.vo.response.ApiResult;
-import com.zoowayss.app.common.common.utils.oss.MinIOTemplate;
-import com.zoowayss.app.common.common.utils.oss.domain.OssReq;
+import com.zoowayss.app.server.common.service.ExpensesService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Description:
@@ -21,16 +23,15 @@ import javax.annotation.Resource;
 @Slf4j
 public class TestController {
 
-    @Resource
-    private MinIOTemplate minIOTemplate;
 
-    @PostMapping
-    public ApiResult test() {
-        OssReq ossReq = OssReq.builder()
-                .fileName("test.jpg")
-                .filePath("/image")
-                .uid(321123L)
-                .build();
-        return ApiResult.success(minIOTemplate.getPreSignedObjectUrl(ossReq));
+    @Resource
+    private ExpensesService expensesService;
+
+    @GetMapping
+    @RedisCache(key = "#pageReq.pageNo",expireTime = 3,unit = TimeUnit.SECONDS)
+    public ApiResult page(PageBaseReq pageReq) {
+        return ApiResult.success(expensesService.queryPage(pageReq));
     }
 }
+
+

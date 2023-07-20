@@ -24,6 +24,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'com.baomidou:mybatis-plus-boot-starter:3.5.2'
     implementation 'mysql:mysql-connector-java:8.0.29'
+    implementation 'cn.hutool:hutool-all:5.8.16'
+
 }
 
 test {

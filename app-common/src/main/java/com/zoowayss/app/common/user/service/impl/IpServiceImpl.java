@@ -18,7 +18,6 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -100,21 +99,6 @@ public class IpServiceImpl implements IpService, DisposableBean {
         return null;
     }
 
-    //测试耗时结果 100次查询总耗时约100s，平均一次成功查询需要1s,可以接受
-    //第99次成功,目前耗时：99545ms
-    public static void main(String[] args) {
-        Date begin = new Date();
-        for (int i = 0; i < 100; i++) {
-            int finalI = i;
-            EXECUTOR.execute(() -> {
-                IpDetail ipDetail = TryGetIpDetailOrNullTreeTimes("113.90.36.126");
-                if (Objects.nonNull(ipDetail)) {
-                    Date date = new Date();
-                    System.out.println(String.format("第%d次成功,目前耗时：%dms", finalI, (date.getTime() - begin.getTime())));
-                }
-            });
-        }
-    }
 
     @Override
     public void destroy() throws InterruptedException {

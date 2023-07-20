@@ -191,12 +191,4 @@ public final class SensitiveWordUtils {
         }
     }
 
-    public static void main(String[] args) {
-        String text = "白日,梦";
-        String filter = filter(text);
-        System.out.println(filter);
-
-
-    }
-
 }
