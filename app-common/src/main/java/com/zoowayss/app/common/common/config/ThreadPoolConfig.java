@@ -65,9 +65,9 @@ public class ThreadPoolConfig implements AsyncConfigurer {
     @Bean(AICHAT_EXECUTOR)
     public ThreadPoolTaskExecutor chatAiExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(10);
-        executor.setMaxPoolSize(10);
-        executor.setQueueCapacity(15);
+        executor.setCorePoolSize(100);
+        executor.setMaxPoolSize(1500);
+//        executor.setQueueCapacity(15);
         executor.setThreadNamePrefix("aichat-executor-");
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());//满了直接丢弃，默认为不重要消息推送
         executor.setThreadFactory(new MyThreadFactory(executor));

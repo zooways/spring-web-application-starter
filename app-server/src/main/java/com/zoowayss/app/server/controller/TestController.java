@@ -4,11 +4,14 @@ import com.zoowayss.app.common.common.annotation.RedisCache;
 import com.zoowayss.app.common.common.annotation.RmRedisCache;
 import com.zoowayss.app.common.common.domain.vo.request.PageBaseReq;
 import com.zoowayss.app.common.common.domain.vo.response.ApiResult;
+import com.zoowayss.app.common.common.event.ArticlePostEvent;
 import com.zoowayss.app.common.common.utils.JsonUtils;
+import com.zoowayss.app.common.user.domain.entity.UserMsg;
 import com.zoowayss.app.server.common.service.ExpensesService;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +34,10 @@ public class TestController {
 
 
     @Resource
-    private ExpensesService expensesService;
+    private  ExpensesService expensesService;
+
+    @Resource
+    private ApplicationEventPublisher eventPublisher;
 
     @GetMapping
     @RedisCache(key = "#pageReq.pageNo", expireTime = 3, unit = TimeUnit.MINUTES)
@@ -59,12 +65,22 @@ public class TestController {
 
     /**
      * 测试删除 redis 缓存
+     *
      * @param pageNo
      * @return
      */
-    @RmRedisCache(prefixKey = "class com.zoowayss.app.server.controller.TestController#page",key = "#pageNo")
+    @RmRedisCache(prefixKey = "class com.zoowayss.app.server.controller.TestController#page", key = "#pageNo")
     @GetMapping("/rm")
-    public ApiResult test(int pageNo){
+    public ApiResult test(int pageNo) {
+        return ApiResult.success();
+    }
+
+
+    @GetMapping("/chat")
+    public ApiResult chat(String msg) {
+        UserMsg userMsg = new UserMsg(msg);
+        log.info("saving userMsg: {} ...", userMsg);
+        eventPublisher.publishEvent(new ArticlePostEvent(this, userMsg));
         return ApiResult.success();
     }
 }
